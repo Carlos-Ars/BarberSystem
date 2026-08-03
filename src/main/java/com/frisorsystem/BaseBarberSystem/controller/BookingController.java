@@ -62,14 +62,14 @@ public class BookingController {
     ){
 
         Booking booking = bookingRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new RuntimeException("Booking not found"));
 
 
         booking.setStatus(request.getStatus());
 
 
         TimeSlot timeSlot = timeSlotRepository.findById(request.getTimeSlotId())
-                .orElseThrow();
+                .orElseThrow(() -> new RuntimeException("Time slot not found"));
 
 
         booking.setTimeSlot(timeSlot);
