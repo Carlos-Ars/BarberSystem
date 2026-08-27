@@ -31,4 +31,16 @@ public class BookingServiceController {
         return bookingServiceRepository.save(bookingService);
     }
 
+
+    // Get booking service by id
+    @GetMapping("/{id}")
+    public BookingService getBookingServiceById(@PathVariable Long id){
+        return bookingServiceRepository.findById(id).orElse(null);
+    }
+
+    // Delete booking service
+    @DeleteMapping("/{id}")
+    public void deleteBookingService(@PathVariable Long id){
+        bookingServiceRepository.deleteById(id);
+    }
 }
