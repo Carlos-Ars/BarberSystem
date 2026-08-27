@@ -1,6 +1,11 @@
+
+
 package com.frisorsystem.BaseBarberSystem.model;
 
 import jakarta.persistence.*;
+
+
+
 
 @Entity
 public class Booking {
@@ -19,6 +24,7 @@ public class Booking {
     @ManyToOne
     @JoinColumn(name = "timeSlotID")
     private TimeSlot timeSlot;
+
 
 
     //empty constructor so the databse can generate values
@@ -51,6 +57,7 @@ public class Booking {
     public void setUser(User user){
         this.user=user;
     }
+
 
     public TimeSlot getTimeSlot(){
         return timeSlot;
