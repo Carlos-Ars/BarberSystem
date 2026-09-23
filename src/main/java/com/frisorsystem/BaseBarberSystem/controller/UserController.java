@@ -5,6 +5,10 @@ import com.frisorsystem.BaseBarberSystem.model.User;
 import com.frisorsystem.BaseBarberSystem.repository.UserRepository;
 import org.springframework.web.bind.annotation.*;
 
+import com.frisorsystem.BaseBarberSystem.exception.NotFoundException;
+
+import jakarta.validation.Valid;
+
 import java.util.List;
 
 @RestController
@@ -31,13 +35,14 @@ public class UserController {
     // Get user by id
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id){
-        return userRepository.findById(id).orElse(null);
+        return userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("User not found"));
     }
 
 
     // Create user
     @PostMapping
-    public User createUser(@RequestBody User user){
+    public User createUser(@Valid @RequestBody User user){
         return userRepository.save(user);
     }
 

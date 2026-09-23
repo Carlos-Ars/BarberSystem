@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class TimeSlot {
@@ -12,7 +13,11 @@ public class TimeSlot {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "timeSlotID")
     private Long id;
+
+    @NotNull
     private LocalDate date;
+
+    @NotNull
     private LocalTime time;
 
 

@@ -7,6 +7,9 @@ import com.frisorsystem.BaseBarberSystem.repository.TimeSlotRepository;
 import com.frisorsystem.BaseBarberSystem.model.TimeSlot;
 import com.frisorsystem.BaseBarberSystem.dto.UpdateBookingRequest;
 
+import com.frisorsystem.BaseBarberSystem.exception.BadRequestException;
+import com.frisorsystem.BaseBarberSystem.exception.NotFoundException;
+
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -38,12 +41,18 @@ public class BookingController {
     // Get booking by id
     @GetMapping("/{id}")
     public Booking getBookingById(@PathVariable Long id){
-        return bookingRepository.findById(id).orElse(null);
+        return bookingRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Booking not found"));
     }
 
     // Create new bookings
     @PostMapping
     public Booking createBooking(@RequestBody Booking booking){
+
+        if (bookingRepository.existsByTimeSlotId(booking.getTimeSlot().getId())) {
+            throw new RuntimeException("Time slot is already booked");
+        }
+
         return bookingRepository.save(booking);
     }
 
@@ -62,14 +71,18 @@ public class BookingController {
     ){
 
         Booking booking = bookingRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Booking not found"));
+                .orElseThrow(() -> new NotFoundException("Booking not found"));
 
 
         booking.setStatus(request.getStatus());
 
 
         TimeSlot timeSlot = timeSlotRepository.findById(request.getTimeSlotId())
-                .orElseThrow(() -> new RuntimeException("Time slot not found"));
+                .orElseThrow(() -> new NotFoundException("Time slot not found"));
+
+        if (bookingRepository.existsByTimeSlotIdAndIdNot(timeSlot.getId(), id)) {
+            throw new BadRequestException("Time slot is already booked");
+        }
 
 
         booking.setTimeSlot(timeSlot);

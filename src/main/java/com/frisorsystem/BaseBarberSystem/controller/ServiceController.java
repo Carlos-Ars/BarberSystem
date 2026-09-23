@@ -6,6 +6,10 @@ import com.frisorsystem.BaseBarberSystem.model.Service;
 import com.frisorsystem.BaseBarberSystem.repository.ServiceRepository;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
+
+import com.frisorsystem.BaseBarberSystem.exception.NotFoundException;
+
 import java.util.List;
 
 @RestController
@@ -32,13 +36,14 @@ public class ServiceController {
     // Get service by id
     @GetMapping("/{id}")
     public Service getServiceById(@PathVariable Long id){
-        return serviceRepository.findById(id).orElse(null);
+        return serviceRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Service not found"));
     }
 
 
     // Create service
     @PostMapping
-    public Service createService(@RequestBody Service service){
+    public Service createService(@Valid @RequestBody Service service){
         return serviceRepository.save(service);
     }
 

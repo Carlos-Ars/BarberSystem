@@ -1,5 +1,7 @@
 package com.frisorsystem.BaseBarberSystem.model;
 
+import jakarta.validation.constraints.NotBlank;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -9,8 +11,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "userID")
     private Long id;
+
+    @NotBlank
     private String name;
+
+    @NotBlank
     private String phone;
+
+    @NotBlank
     private String role;
 
     public User(){

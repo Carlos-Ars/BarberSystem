@@ -1,5 +1,8 @@
 package com.frisorsystem.BaseBarberSystem.model;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -12,8 +15,14 @@ public class Service {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "serviceID")
     private Long id;
+
+    @Positive
     private int durationMinutes;
+
+    @NotBlank
     private String serviceName;
+
+    @Positive
     private BigDecimal price;
 
 
